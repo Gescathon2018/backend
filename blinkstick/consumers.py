@@ -14,6 +14,8 @@ class BSConsumer(JsonWebsocketConsumer):
         # mode = text_data['mode']
         # leds = text_data['leds']
 
+        print(self.__dict__)
+
         print('*'*90)
         print(text_data)
         print('*'*90)
