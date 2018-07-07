@@ -27,3 +27,5 @@ services:
       - POSTGRES_PASSWORD=med99xw9p
     volumes:
       - .:/app
+    ports:
+      - "8000:8000"

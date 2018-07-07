@@ -125,5 +125,5 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-ASGI_APPLICATION = "backend.routing.application"
+ASGI_APPLICATION = "routing.application"
 
