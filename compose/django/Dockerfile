@@ -11,11 +11,11 @@ RUN apt-get install gettext -y
 COPY requirements.txt requirements.txt
 RUN pip install -U -r /requirements.txt
 
-COPY entrypoint.sh /entrypoint.sh
+COPY compose/django/entrypoint.sh /entrypoint.sh
 RUN sed -i 's/\r//' /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
-COPY start-server.sh /start-server.sh
+COPY compose/django/start-server.sh /start-server.sh
 RUN sed -i 's/\r//' /start-server.sh
 RUN chmod +x /start-server.sh
 
