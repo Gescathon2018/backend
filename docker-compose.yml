@@ -1,0 +1,29 @@
+version: '2'
+
+volumes:
+  postgres_data_dev: {}
+
+services:
+  backend-postgres:
+    build: compose/postgres
+    volumes:
+      - postgres_data_dev:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=backend
+      - POSTGRES_PASSWORD=med99xw9p
+      - POSTGRES_HOST=backend-postgres
+    ports:
+      - "5432:5432"
+
+  backend-django:
+    build: compose/django
+    command: /start-server.sh
+    depends_on:
+      - backend-postgres
+    environment:
+      - DJANGO_SETTINGS_MODULE=backend.settings
+      - POSTGRES_HOST=backend-postgres
+      - POSTGRES_USER=backend
+      - POSTGRES_PASSWORD=med99xw9p
+    volumes:
+      - .:/app
