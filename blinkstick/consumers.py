@@ -1,8 +1,7 @@
-from channels.generic.websocket import WebsocketConsumer
-import json
+from channels.generic.websocket import JsonWebsocketConsumer
 
 
-class BSConsumer(WebsocketConsumer):
+class BSConsumer(JsonWebsocketConsumer):
     def connect(self):
         self.accept()
 
@@ -11,14 +10,12 @@ class BSConsumer(WebsocketConsumer):
 
     def receive(self, text_data):
 
-        text_data_json = json.loads(text_data)
-        message = text_data_json['message']
-
+        # account = text_data['account']
+        # mode = text_data['mode']
+        # leds = text_data['leds']
 
         print('*'*90)
-        print(message)
+        print(text_data)
         print('*'*90)
 
-        self.send(text_data=json.dumps({
-            'message': message
-        }))
+        self.send(text_data=text_data)
