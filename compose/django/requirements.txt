@@ -1,0 +1,4 @@
+Django==1.11
+psycopg2==2.7.3.2
+pathlib==1.0.1
+channels==2.1.2
