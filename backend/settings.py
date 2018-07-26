@@ -128,3 +128,29 @@ STATIC_URL = '/static/'
 
 ASGI_APPLICATION = "routing.application"
 
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("backend-redis", 6379)],
+        },
+    },
+}
+
+BMS_SERVICES = {
+    'hipchat': {
+        'label': 'HipChat status notifier',
+        'type': 'collector',
+        'class': 'bms.hipchat.HipchatStatusCollector',
+        'per_user': True,
+        'kwargs': {
+            'api_key': 'IDuE9yiFYkAvUIHEZetYBV0C7L9nU138HWRGo5HV'
+        }
+    },
+    'bamboo': {
+        'label': 'Bamboo webhook',
+        'type': 'webhook',
+        'class': 'bms.bamboo.BambooWebhook',
+        'per_user': False  
+    }
+}

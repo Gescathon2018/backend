@@ -12,8 +12,6 @@ services:
       - POSTGRES_USER=backend
       - POSTGRES_PASSWORD=med99xw9p
       - POSTGRES_HOST=backend-postgres
-    ports:
-      - "5432:5432"
 
   backend-django:
     build:
@@ -22,6 +20,7 @@ services:
     command: /start-server.sh
     depends_on:
       - backend-postgres
+      - backend-redis
     environment:
       - DJANGO_SETTINGS_MODULE=backend.settings
       - POSTGRES_HOST=backend-postgres
@@ -32,3 +31,5 @@ services:
     ports:
       - "8000:8000"
 
+  backend-redis:
+    image: redis:latest

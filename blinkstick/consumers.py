@@ -1,23 +1,37 @@
-from channels.generic.websocket import JsonWebsocketConsumer
+from channels.generic.websocket import AsyncJsonWebsocketConsumer
+from .utils import create_response
+from . import commands
 
+class BlinkMyStickConsumer(AsyncJsonWebsocketConsumer):
+    async def connect(self):
+        await self.accept()
 
-class BSConsumer(JsonWebsocketConsumer):
-    def connect(self):
-        self.accept()
-
-    def disconnect(self, close_code):
+    async def disconnect(self, close_code):
         pass
 
-    def receive(self, text_data):
+    async def receive_json(self, data):
+        print(data)
+        command = data.get('command')
+        if not command:
+            await self.send_json(create_response(1, 'No command specified'))
+            return
 
-        # account = text_data['account']
-        # mode = text_data['mode']
-        # leds = text_data['leds']
 
-        print(self.__dict__)
+        if command != 'login' and self.scope['user'].is_anonymous:
+            await self.send_json(create_response(3, 'You must be logged in '
+                'to invoke this command'))
+            return            
 
-        print('*'*90)
-        print(text_data)
-        print('*'*90)
+        cmd = getattr(commands, command, None)
 
-        self.send(text_data=text_data)
+        if not cmd:
+            await self.send_json(create_response(2, "Command not found"))
+            return
+
+        response = await cmd(self, data.get('data'))
+        await self.send_json(response)
+   
+        
+
+    async def bms_notify(self, event):
+        await self.send_json(event['message'])
